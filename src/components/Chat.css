@@ -47,7 +47,6 @@
   background-repeat: repeat;
   background-position: center;
   padding: 30px;
-  overflow: scroll;
 }
 
 .chat_message {
@@ -55,11 +54,21 @@
   font-size: 16px;
   border-radius: 10px;
   padding: 10px;
-  background-color: white;
+  background-color: lightskyblue;
   width: fit-content;
   margin: 20px;
+  margin-left: auto;
 }
 
+.chat_receiver {
+  margin-right: auto;
+  background-color: lightcoral;
+  width: fit-content;
+  margin: 20px;
+  padding: 10px;
+  border-radius: 10px;
+  border-top-right-radius: 0;
+}
 .chat_name {
   position: absolute;
   top: -15px;
@@ -93,13 +102,7 @@
 .chat_timestemp {
   margin-left: 10px;
   font-size: xx-small;
-}
-
-.chat_receiver {
-  margin-left: auto;
-  background-color: #dcf8c6;
-  width: fit-content;
-  margin: 20px;
+  opacity: 0.6;
 }
 
 .chat_footer {
@@ -124,4 +127,15 @@
 }
 
 .chat_footer > form > button {
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+  border-width: 0;
+  cursor: pointer;
+  display: inline;
+  border-radius: 10px;
+  font-size: 10px;
+  background-color: lightgray;
+  transition: all 0.2s ease-in-out;
+}
+.chat_footer > form > button:hover {
+  filter: opacity(0.9);
 }

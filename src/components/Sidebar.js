@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "./Sidebar.css";
-import { Avatar, IconButton } from "@material-ui/core";
-import DonutLargeIcon from "@material-ui/icons/DonutLarge";
-import ChatIcon from "@material-ui/icons/Chat";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
-import { SearchOutlined } from "@material-ui/icons";
+import { Avatar, IconButton } from "@mui/material";
+import { DonutLargeIcon } from "@mui/icons-material";
+import { ChatIcon } from "@mui/icons-material";
+import { MoreVertIcon } from "@mui/icons-material";
+import { SearchOutlined } from "@mui/icons-material";
 import SidebarChat from "./SidebarChat";
 import db from "../firebase";
 import { useStateValue } from "../StateProvider";

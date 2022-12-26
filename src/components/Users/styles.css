@@ -1,0 +1,56 @@
+.users_container {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  min-height: 100vmin;
+}
+.user_parent {
+  flex: 0.3;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  text-align: center;
+  padding: 2em;
+  border-radius: 20px;
+  cursor: pointer;
+  position: relative;
+  border: 4px solid rgba(128, 128, 128, 0.371);
+  transition: all 0.2s ease-in-out;
+  text-decoration: none;
+  color: #383838;
+}
+.user_parent:hover {
+  transform: scale(1.01);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+.user_parent .user_id {
+  font-size: 12px;
+}
+.info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.info label {
+  opacity: 0.7;
+  width: 100px;
+  text-align: left;
+}
+.info > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.user_avatar {
+  background-color: rgb(30, 108, 210);
+  padding: 0.2em;
+  border-radius: 40px;
+  margin: 0.1em;
+  position: absolute;
+  left: 0.2em;
+  top: 0.2em;
+}
+.first_row {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}

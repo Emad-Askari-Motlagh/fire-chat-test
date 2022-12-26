@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { Avatar, IconButton } from "@material-ui/core";
-import { AttachFile, MoreVert, SearchOutlined } from "@material-ui/icons";
-import MicIcon from "@material-ui/icons/Mic";
-import InsertEmoticonIcon from "@material-ui/icons/InsertEmoticon";
+import React, { useState, useEffect, useCallback } from "react";
+import { Avatar } from "@mui/material";
+
+import { InsertEmoticon, Mic } from "@mui/icons-material";
 import "./Chat.css";
 import { useParams } from "react-router-dom";
 import db from "../firebase";
 import firebase from "firebase";
 import { useStateValue } from "../StateProvider";
+import { encryptData, decryptData } from "../lib/crypto";
 
 function Chat() {
   const [input, setInput] = useState("");
@@ -29,6 +29,7 @@ function Chat() {
             setIsRoomAvailable(true);
           } else {
             setIsRoomAvailable(false);
+            db.collection("rooms").doc(roomId).set({});
           }
         });
 
@@ -49,10 +50,11 @@ function Chat() {
     setSeed(Math.floor(Math.random() * 5000));
   }, [roomId]);
 
-  const sendMessage = (e) => {
+  const sendMessage = async (e) => {
     e.preventDefault();
-    db.collection("rooms").doc(roomId).collection("messages").add({
-      message: input,
+    const encryptedTest = encryptData(input);
+    await db.collection("rooms").doc(roomId).collection("messages").add({
+      message: encryptedTest,
       name: user.email,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
     });
@@ -74,22 +76,12 @@ function Chat() {
         <div className="chat_headerInfo">
           <h3 className="chat-room-name">{roomName}</h3>
           <p className="chat-room-last-seen">
-            Last seen
-            {new Date(
-              messages[messages?.length - 1]?.data?.timestamp?.toDate()
-            ).toUTCString()}
+            {messages[messages?.length - 1]
+              ? ` Last seen: ${new Date(
+                  messages[messages?.length - 1]?.data?.timestamp?.toDate()
+                ).toUTCString()}`
+              : "No Message Yet"}
           </p>
-        </div>
-        <div className="chat_headerRight">
-          <IconButton>
-            <SearchOutlined />
-          </IconButton>
-          <IconButton>
-            <AttachFile />
-          </IconButton>
-          <IconButton>
-            <MoreVert />
-          </IconButton>
         </div>
       </div>
       <div className="chat_body">
@@ -97,16 +89,15 @@ function Chat() {
           <div
             key={i}
             className={`chat_message ${
-              message.data?.name == user.email && "chat_receiver"
+              message.data?.name === user?.email && "chat_receiver"
             }`}>
             <span
               className={`chat_name ${
-                message.data?.name == user.email && "chat_name_me"
+                message.data?.name === user?.email && "chat_name_me"
               }`}>
-              {" "}
-              {message.data?.name == user.email ? "Me" : message.data?.name}
+              {message.data?.name === user?.email ? "Me" : message.data?.name}
             </span>
-            {message.data?.message}
+            {decryptData(message.data?.message)}
             <span className="chat_timestemp">
               {new Date(message.data?.timestamp?.toDate()).toUTCString()}
             </span>
@@ -114,7 +105,7 @@ function Chat() {
         ))}
       </div>
       <div className="chat_footer">
-        <InsertEmoticonIcon />
+        <InsertEmoticon />
         <form>
           <input
             value={input}
@@ -126,7 +117,7 @@ function Chat() {
             Send a Message
           </button>
         </form>
-        <MicIcon />
+        <Mic />
       </div>
     </div>
   );

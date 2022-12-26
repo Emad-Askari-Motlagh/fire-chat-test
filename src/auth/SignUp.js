@@ -1,18 +1,20 @@
-import { Button } from "@material-ui/core";
+import Button from "../components/Button";
 import React from "react";
 import "./auth.css";
+import Link from "../components/Link";
 
 function SignUp({ signUp, signUpRef }) {
   return (
     <div className="login">
       <div className="login_container">
+        <div className="login_text">
+          <h1>Sign Up</h1>
+        </div>
         <img
           src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
           alt=""
         />
-        <div className="login_text">
-          <h1>Sign Up to Whatsapp</h1>
-        </div>
+
         <div>
           <div>
             <form ref={signUpRef} className="form">

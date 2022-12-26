@@ -15,27 +15,20 @@ export default function useAuth() {
 
   async function getAllUsers() {
     const users = [];
-    if (currentUser) {
-      const res = await (await db.collection("users").get()).docs;
-      res.forEach((res) => {
-        users.push(res.data());
-      });
-
-      return users;
-    }
+    const res = await (await db.collection("users").get()).docs;
+    res.forEach((res) => {
+      users.push(res.data());
+    });
+    return users;
   }
   useEffect(() => {
     auth.onAuthStateChanged(function (user) {
-      if (user != null) {
-        setCurrentUser(user);
+      setCurrentUser(user);
 
-        dispatch({
-          type: actionTypes.SET_USER,
-          user: user,
-        });
-      } else {
-        setCurrentUser(null);
-      }
+      dispatch({
+        type: actionTypes.SET_USER,
+        user: user,
+      });
     });
   }, []);
 

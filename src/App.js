@@ -1,6 +1,5 @@
 import "./App.css";
 import React, { useEffect, useState } from "react";
-import Sidebar from "./components/Sidebar";
 import Chat from "./components/Chat";
 import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 import { useStateValue } from "./StateProvider";
