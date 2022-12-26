@@ -1,6 +1,9 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Roboto:ital,wght@0,400;1,900&display=swap");
+
 .chat {
   width: 80%;
   margin: auto;
+  font-family: "Playfair Display", sans-serif;
 }
 
 .chat-room-name {
@@ -54,6 +57,7 @@
   padding: 10px;
   background-color: white;
   width: fit-content;
+  margin: 20px;
 }
 
 .chat_name {
@@ -61,6 +65,29 @@
   top: -15px;
   font-weight: 800;
   font-size: xx-small;
+}
+.warning {
+  color: black;
+  font-weight: 900;
+  font-family: "Playfair Display", sans-serif;
+  text-align: center;
+  height: 50vmin;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 26px;
+}
+.warning div {
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  padding: 2em;
+  border-radius: 20px;
+}
+.chat_name_me {
+  position: absolute;
+  top: -15px;
+  font-weight: 800;
+  font-size: xx-small;
+  right: 1em;
 }
 
 .chat_timestemp {
@@ -71,6 +98,8 @@
 .chat_receiver {
   margin-left: auto;
   background-color: #dcf8c6;
+  width: fit-content;
+  margin: 20px;
 }
 
 .chat_footer {

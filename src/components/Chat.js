@@ -16,6 +16,7 @@ function Chat() {
 
   const [roomName, setRoomName] = useState("");
   const [messages, setMessages] = useState([]);
+  const [isRoomAvailable, setIsRoomAvailable] = useState(true);
   const [{ user }, dispatch] = useStateValue();
 
   useEffect(() => {
@@ -23,15 +24,23 @@ function Chat() {
       db.collection("rooms")
         .doc(roomId)
         .onSnapshot((snapshot) => {
-          setRoomName(snapshot.data()?.name);
+          if (snapshot.exists) {
+            setRoomName(snapshot.data()?.name);
+            setIsRoomAvailable(true);
+          } else {
+            setIsRoomAvailable(false);
+          }
         });
 
       db.collection("rooms")
         .doc(roomId)
         .collection("messages")
+        .orderBy("timestamp")
 
         .onSnapshot((snapshot) => {
-          setMessages(snapshot.docs.map((doc) => doc.data()));
+          setMessages(
+            snapshot.docs.flatMap((doc) => [{ id: doc.id, data: doc.data() }])
+          );
         });
     }
   }, [roomId]);
@@ -51,6 +60,13 @@ function Chat() {
     setInput("");
   };
 
+  if (!isRoomAvailable) {
+    return (
+      <div className="warning">
+        <div>OBS! There isn`t any room with this number</div>
+      </div>
+    );
+  }
   return (
     <div className="chat">
       <div className="chat_header">
@@ -58,9 +74,9 @@ function Chat() {
         <div className="chat_headerInfo">
           <h3 className="chat-room-name">{roomName}</h3>
           <p className="chat-room-last-seen">
-            Last seen{" "}
+            Last seen
             {new Date(
-              messages[messages.length - 1]?.timestamp?.toDate()
+              messages[messages?.length - 1]?.data?.timestamp?.toDate()
             ).toUTCString()}
           </p>
         </div>
@@ -78,17 +94,23 @@ function Chat() {
       </div>
       <div className="chat_body">
         {messages.map((message, i) => (
-          <p
+          <div
             key={i}
             className={`chat_message ${
-              message.name == user.email && "chat_receiver"
+              message.data?.name == user.email && "chat_receiver"
             }`}>
-            <span className="chat_name">{message.name}</span>
-            {message.message}
-            <span className="chat_timestemp">
-              {new Date(message.timestamp?.toDate()).toUTCString()}
+            <span
+              className={`chat_name ${
+                message.data?.name == user.email && "chat_name_me"
+              }`}>
+              {" "}
+              {message.data?.name == user.email ? "Me" : message.data?.name}
             </span>
-          </p>
+            {message.data?.message}
+            <span className="chat_timestemp">
+              {new Date(message.data?.timestamp?.toDate()).toUTCString()}
+            </span>
+          </div>
         ))}
       </div>
       <div className="chat_footer">
