@@ -1,0 +1,59 @@
+.login {
+  background-color: #f8f8f8;
+  height: 100vh;
+  width: 100vw;
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+}
+
+.login_container {
+  padding: 100px;
+  text-align: center;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(213, 150, 150, 0.12), 0 1px 3px rgba(0, 0, 0, 0.12);
+  width: 60%;
+}
+.login_container a {
+  cursor: pointer;
+  color: rgb(69, 74, 77);
+  text-shadow: 0.2px 0.2px 0.2px rgb(0, 0, 0);
+  transition: color, transform 0.2s ease-in;
+
+  display: block;
+  text-align: right;
+  margin-top: 20px;
+}
+.login_container a:hover {
+  transform: scale(1.01);
+  color: darkred;
+}
+.login_container > img {
+  object-fit: contain;
+  height: 100px;
+  margin-bottom: 40px;
+}
+.form {
+  font-size: 15px;
+}
+.inputs_parent {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: column;
+  gap: 1em;
+}
+.inputs_parent input {
+  width: 50%;
+  padding: 1em 0.3em;
+  font-size: 14px;
+}
+.login_container button {
+  margin-top: 50px;
+  text-transform: inherit !important;
+  background-color: #0a8d48 !important;
+  color: white;
+  width: 50%;
+  border: 1px solid black;
+}
