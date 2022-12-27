@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import db, { auth, provider } from "../firebase";
 import { actionTypes } from "../reducer";
 import { useStateValue } from "../StateProvider";
@@ -12,6 +12,7 @@ export default function useAuth() {
   const signUpRef = useRef();
   const [currentUser, setCurrentUser] = useState(null);
   const [users, setUsers] = useState([]);
+  const [userLoading, setUserLoading] = useState();
 
   async function getAllUsers() {
     const users = [];
@@ -21,34 +22,45 @@ export default function useAuth() {
     });
     return users;
   }
+
   useEffect(() => {
     auth.onAuthStateChanged(function (user) {
+      setUserLoading(true);
+      if (user.uid) {
+        setUserLoading(false);
+      }
       setCurrentUser(user);
-
       dispatch({
         type: actionTypes.SET_USER,
         user: user,
+        userLoading: false,
       });
     });
   }, []);
 
-  const signIn = async () => {
+  const signIn = async (e) => {
+    e.preventDefault();
+
     const { username, password } = loginRef.current;
+
     try {
       const result = await auth.signInWithEmailAndPassword(
         username.value,
         password.value
       );
+      console.log(result);
       dispatch({
         type: actionTypes.SET_USER,
         user: result.user,
       });
       if (result.user) window.location.href = "/";
     } catch (error) {
+      console.log(error.message);
       alert(error.message);
     }
   };
-  const signUp = async () => {
+  const signUp = async (e) => {
+    e.preventDefault();
     const { username, password } = signUpRef.current;
     try {
       const result = await auth.createUserWithEmailAndPassword(
@@ -81,5 +93,6 @@ export default function useAuth() {
     currentUser,
     signOut,
     getAllUsers,
+    userLoading,
   };
 }

@@ -6,12 +6,33 @@
   place-items: center;
   font-size: 18px;
 }
+
 .login_text {
   margin-right: auto;
   width: 100%;
   display: flex;
   justify-content: flex-start;
   align-items: center;
+}
+.login_text h2 {
+  color: #383838;
+
+  width: 100%;
+  position: relative;
+  text-align: left;
+
+  width: fit-content;
+}
+.login_text h2::after {
+  position: absolute;
+  content: "";
+  left: 0;
+  right: 0;
+  bottom: -100%;
+
+  height: 10px;
+  background-color: rgba(0, 0, 0, 0.397);
+  width: 100%;
 }
 .login_container {
   padding: 100px;

@@ -8,7 +8,7 @@ function SignUp({ signUp, signUpRef }) {
     <div className="login">
       <div className="login_container">
         <div className="login_text">
-          <h1>Sign Up</h1>
+          <h2>Sign Up</h2>
         </div>
         <img
           src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
@@ -23,7 +23,7 @@ function SignUp({ signUp, signUpRef }) {
                 <input placeholder="Password" id="password" />
               </div>
 
-              <Button onClick={signUp}>Sign U</Button>
+              <Button onClick={signUp}>Sign Up</Button>
             </form>
           </div>
           <div>

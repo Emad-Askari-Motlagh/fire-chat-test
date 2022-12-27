@@ -11,9 +11,10 @@ import Users from "./components/Users/Users";
 
 function App() {
   const [{ user }, dispatch] = useStateValue();
+  const { userLoading } = useAuth();
 
   const { signIn, signUp, loginRef, signUpRef, signOut } = useAuth();
-
+  const LoginEl = () => <Login signIn={signIn} loginRef={loginRef} />;
   return (
     <div className="app">
       <Header user={user?.email} signOut={signOut}></Header>
@@ -21,28 +22,18 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/chat/rooms/:roomId" element={<Chat />}></Route>
-            <Route
-              path="/"
-              element={
-                <div style={{ width: "100vw" }}>
-                  <Users />
-                </div>
-              }></Route>
-            <Route
-              path="/:roomId"
-              element={
-                <div style={{ width: "100vw" }}>
-                  <Chat />
-                </div>
-              }></Route>
+            {!userLoading || user ? (
+              <Route path="/" element={<Users />}></Route>
+            ) : (
+              <Route path="/" element={<Login />}></Route>
+            )}
+            <Route path="/:roomId" element={<Chat />}></Route>
             <Route
               path="/auth/signup"
               element={
                 <SignUp signUp={signUp} signUpRef={signUpRef} />
               }></Route>
-            <Route
-              path="/auth/login"
-              element={<Login signIn={signIn} loginRef={loginRef} />}></Route>
+            <Route path="/auth/login" element={<LoginEl />}></Route>
           </Routes>
         </BrowserRouter>
       </div>

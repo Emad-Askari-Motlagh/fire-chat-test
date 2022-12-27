@@ -17,7 +17,7 @@ export default function Header({ user, signOut }) {
         <Home />
       </Link>
       <button
-        className="button-85"
+        className="button-5"
         role="button"
         onClick={user ? signOut : () => (window.location.href = "/auth/login")}>
         {user ? "SignOut" : "Login"}

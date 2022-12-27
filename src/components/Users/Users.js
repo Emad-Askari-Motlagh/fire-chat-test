@@ -10,6 +10,7 @@ function Users() {
   const [users, setUsers] = useState([]);
   const { getAllUsers } = useAuth();
   const [{ user: currentUser }, dispatch] = useStateValue();
+
   useEffect(() => {
     async function fetchUsers() {
       const res = await getAllUsers();

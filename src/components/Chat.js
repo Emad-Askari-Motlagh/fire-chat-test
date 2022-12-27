@@ -1,13 +1,15 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { Avatar } from "@mui/material";
-
+import { AttachFile } from "@mui/icons-material";
 import { InsertEmoticon, Mic } from "@mui/icons-material";
 import "./Chat.css";
 import { useParams } from "react-router-dom";
-import db from "../firebase";
+import db, { storage } from "../firebase";
 import firebase from "firebase";
 import { useStateValue } from "../StateProvider";
 import { encryptData, decryptData } from "../lib/crypto";
+import Loading from "./Loading";
+import Button from "./Button";
 
 function Chat() {
   const [input, setInput] = useState("");
@@ -18,7 +20,9 @@ function Chat() {
   const [messages, setMessages] = useState([]);
   const [isRoomAvailable, setIsRoomAvailable] = useState(true);
   const [{ user }, dispatch] = useStateValue();
+  const [loading, setLoading] = useState(true);
 
+  const fileRef = useRef();
   useEffect(() => {
     if (roomId) {
       db.collection("rooms")
@@ -43,9 +47,25 @@ function Chat() {
             snapshot.docs.flatMap((doc) => [{ id: doc.id, data: doc.data() }])
           );
         });
+      setLoading(false);
     }
   }, [roomId]);
+  async function attachFile(e) {
+    const fileSrc = URL.createObjectURL(e.target.files[0]);
+    const file = e.target.files[0];
+    if (file) {
+      const tt = await storage.ref(`images/${file.name}`).put(file).snapshot;
+      const url = await tt.ref.getDownloadURL();
+      const name = tt.ref.name;
 
+      await db.collection("rooms").doc(roomId).collection("messages").add({
+        imageUrl: url,
+        imageName: name,
+        name: user.email,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+    }
+  }
   useEffect(() => {
     setSeed(Math.floor(Math.random() * 5000));
   }, [roomId]);
@@ -69,6 +89,7 @@ function Chat() {
       </div>
     );
   }
+
   return (
     <div className="chat">
       <div className="chat_header">
@@ -84,6 +105,7 @@ function Chat() {
           </p>
         </div>
       </div>
+      {loading && <Loading />}
       <div className="chat_body">
         {messages.map((message, i) => (
           <div
@@ -97,7 +119,21 @@ function Chat() {
               }`}>
               {message.data?.name === user?.email ? "Me" : message.data?.name}
             </span>
-            {decryptData(message.data?.message)}
+            {message.data?.message ? (
+              decryptData(message.data?.message)
+            ) : (
+              <a
+                download={message.data.imageName}
+                href={message.data.imageUrl}
+                title={message.data.imageName}>
+                <img
+                  onClick={(e) => (e.target.style.width = "400px")}
+                  className="message_img"
+                  src={message.data.imageUrl}
+                  alt={message.data.imageName}></img>
+              </a>
+            )}
+
             <span className="chat_timestemp">
               {new Date(message.data?.timestamp?.toDate()).toUTCString()}
             </span>
@@ -113,10 +149,22 @@ function Chat() {
             type="text"
             placeholder="Type a message"
           />
-          <button type="submit" onClick={sendMessage}>
+          <label htmlFor="file">
+            <AttachFile className="attach_icon" />
+          </label>
+
+          <input
+            ref={fileRef}
+            onChange={attachFile}
+            className="attach_input"
+            type="file"
+            id="file"
+          />
+          <Button type="submit" onClick={sendMessage}>
             Send a Message
-          </button>
+          </Button>
         </form>
+
         <Mic />
       </div>
     </div>

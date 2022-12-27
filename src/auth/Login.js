@@ -8,7 +8,7 @@ function Login({ signIn, loginRef }) {
     <div className="login">
       <div className="login_container">
         <div className="login_text">
-          <h1>LogIn</h1>
+          <h2>LogIn</h2>
         </div>
         <img
           src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
@@ -19,11 +19,23 @@ function Login({ signIn, loginRef }) {
           <div>
             <form ref={loginRef}>
               <div className="inputs_parent">
-                <input placeholder="Username" id="username" />
-                <input placeholder="Password" id="password" />
+                <input
+                  autoCapitalize="false"
+                  autoCorrect="false"
+                  placeholder="Username"
+                  id="username"
+                />
+                <input
+                  autoCapitalize="false"
+                  autoCorrect="false"
+                  placeholder="Password"
+                  id="password"
+                />
               </div>
 
-              <Button onClick={signIn}>Sign in</Button>
+              <Button type="submit" onClick={signIn}>
+                Sign in
+              </Button>
             </form>
           </div>
           <div>
